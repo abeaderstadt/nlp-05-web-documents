@@ -86,6 +86,7 @@ Then edit your copied Python file to:
 # Section 1. Setup and Imports
 # ============================================================
 
+from collections import Counter
 import logging
 
 from bs4 import BeautifulSoup, Tag
@@ -265,11 +266,71 @@ def run_transform(
     abstract_word_count: int = len(abstract.split()) if abstract != "unknown" else 0
     LOG.info(f"Calculated abstract word count: {abstract_word_count}")
 
+    # Calculate derived field: top keywords from abstract
+    if abstract != "unknown":
+        stopwords = {
+            "the",
+            "and",
+            "is",
+            "in",
+            "to",
+            "of",
+            "a",
+            "an",
+            "or",
+            "we",
+            "our",
+            "this",
+            "that",
+            "these",
+            "those",
+            "are",
+            "was",
+            "i",
+            "you",
+            "my",
+            "your",
+            "with",
+            "for",
+            "on",
+            "as",
+            "from",
+            "report",
+            "paper",
+            "study",
+        }
+        words = [w.strip(".,()[]{}:;\"'").lower() for w in abstract.split()]
+        words = [w for w in abstract.lower().split() if w not in stopwords]
+        word_counts = Counter(words)
+        common_words = word_counts.most_common(3)
+        top_keywords_list = [word for word, count in common_words]
+        top_keywords = ", ".join(top_keywords_list)
+    else:
+        top_keywords = "unknown"
+
+    LOG.info(f"Top keywords: {top_keywords}")
+
     # Calculate derived field: author count
     author_count: int = (
         len([a.strip() for a in authors.split(",")]) if authors != "unknown" else 0
     )
     LOG.info(f"Calculated author count: {author_count}")
+
+    # Calculate derived field: formality score
+    if abstract != "unknown":
+        words = abstract.lower().split()
+
+        formal_words = {"we", "our", "this", "that", "these", "those"}
+        informal_words = {"i", "you", "my", "your"}
+
+        formal_count = sum(word in formal_words for word in words)
+        informal_count = sum(word in informal_words for word in words)
+
+        formality_score = formal_count - informal_count
+    else:
+        formality_score = 0
+
+    LOG.info(f"Formality score: {formality_score}")
 
     LOG.info("========================")
     LOG.info("STAGE 03f: Build record and create DataFrame")
@@ -284,6 +345,8 @@ def run_transform(
         "abstract": abstract,
         "abstract_word_count": abstract_word_count,
         "author_count": author_count,
+        "top_keywords": top_keywords,
+        "formality_score": formality_score,
     }
 
     df = pd.DataFrame([record])

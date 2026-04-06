@@ -51,7 +51,7 @@ DATA_PATH: Path = ROOT_PATH / "data"
 RAW_PATH: Path = DATA_PATH / "raw"
 PROCESSED_PATH: Path = DATA_PATH / "processed"
 
-# TODO: In your custom app, change the output file names from case_
-# to something that represents YOUR custom project.
-RAW_HTML_PATH: Path = RAW_PATH / "case_raw.html"
-PROCESSED_CSV_PATH: Path = PROCESSED_PATH / "case_processed.csv"
+# Updated output file names from case_
+# to something that represents my custom project.
+RAW_HTML_PATH: Path = RAW_PATH / "beaderstadt_raw.html"
+PROCESSED_CSV_PATH: Path = PROCESSED_PATH / "beaderstadt_processed.csv"

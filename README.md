@@ -139,6 +139,30 @@ git push -u origin main
 - Use the **UP ARROW** and **DOWN ARROW** in the terminal to scroll through past commands.
 - Use `CTRL+f` to find (and replace) text within a file.
 
+## My Project Modifications
+
+To make this project my own, I TODO
+
+**Phase 4: Make a Technical Modification**
+1. I added two new derived fields:
+      - top_keywords (key terms pulled from the abstract page after removing common stopwords)
+      - formality_score (a simple tone-based score measuring how impersonal vs. personal the writing is)
+2. Observations:
+      - The arXiv abstract page has a formality score of 8, which makes sense since it’s a technical academic paper and leans pretty formal overall.
+      - The formality_score compares how often “formal” words (like we, our, this, that, these, those) appear versus “informal” words (like I, you, my, your).
+      - In general, higher scores mean the writing is more impersonal and academic, while lower scores would feel more conversational or personal.
+      - For the top_keywords field, I filtered out stopwords (like “the”, “and”, “we”, etc.) before extracting keywords.
+      - That made the output way cleaner and helped show actual meaningful terms instead of filler words.
+      - After filtering, the top keywords were more representative of the actual content in the abstract page, like “agents”, “researchers”, and “behaviors”.
+**Phase 5: Apply the Skills to a New Problem**
+1. TODO
+2. Observations:
+     - TODO
+
+**Dataset Source**
+1. TODO
+
+
 ## Example Artifact (Output)
 
 ```text
