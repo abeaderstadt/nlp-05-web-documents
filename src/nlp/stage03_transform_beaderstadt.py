@@ -332,6 +332,53 @@ def run_transform(
 
     LOG.info(f"Formality score: {formality_score}")
 
+    # Calculate derived field: bio / toxicology relevance score
+    bio_tox_keywords = {
+        "molecule": 2,
+        "molecular": 2,
+        "drug": 3,
+        "toxicity": 3,
+        "toxic": 2,
+        "pharmacology": 3,
+        "protein": 2,
+        "binding": 2,
+        "compound": 2,
+        "biomedical": 3,
+        "chemistry": 2,
+        "graph": 2,
+        "neural": 2,
+        "representation": 2,
+        "learning": 1,
+    }
+
+    if abstract != "unknown":
+        text_blob = " ".join(
+            [
+                title.lower() if title else "",
+                abstract.lower() if abstract else "",
+                subjects.lower() if subjects else "",
+            ]
+        )
+
+        tox_score = 0
+
+        for kw, weight in bio_tox_keywords.items():
+            if kw in text_blob:
+                tox_score += weight
+
+        # cap score to 10 for consistency
+        bio_tox_relevance_score = min(tox_score, 10)
+
+    else:
+        bio_tox_relevance_score = 0
+
+    if bio_tox_relevance_score >= 7:
+        LOG.info("HIGH biomedical relevance detected")
+    else:
+        LOG.info("Moderate or low biomedical relevance detected")
+
+    LOG.info("Bio/tox relevance score: %s", bio_tox_relevance_score)
+
     LOG.info("========================")
     LOG.info("STAGE 03f: Build record and create DataFrame")
     LOG.info("========================")
@@ -347,6 +394,7 @@ def run_transform(
         "author_count": author_count,
         "top_keywords": top_keywords,
         "formality_score": formality_score,
+        "bio_tox_relevance_score": bio_tox_relevance_score,
     }
 
     df = pd.DataFrame([record])

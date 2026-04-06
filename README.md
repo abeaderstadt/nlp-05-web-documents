@@ -141,7 +141,7 @@ git push -u origin main
 
 ## My Project Modifications
 
-To make this project my own, I TODO
+To make this project my own, I extended the pipeline with a couple of new derived features and applied it to a biomedical AI use case. I also tested how easily it could be reused on a different arXiv abstract without changing the core structure.
 
 **Phase 4: Make a Technical Modification**
 1. I added two new derived fields:
@@ -155,12 +155,20 @@ To make this project my own, I TODO
       - That made the output way cleaner and helped show actual meaningful terms instead of filler words.
       - After filtering, the top keywords were more representative of the actual content in the abstract page, like “agents”, “researchers”, and “behaviors”.
 **Phase 5: Apply the Skills to a New Problem**
-1. TODO
-2. Observations:
-     - TODO
+1. I updated the URL in my config file to point to a different arXiv abstract in the biomedical AI space (focused on drug/toxicity prediction).
+2. I added one additional derived field:
+      - bio_tox_relevance_score (a weighted keyword-based score that estimates how relevant the paper is to biomedical or drug-related research)
+      - This score gives higher importance to more meaningful domain terms like drug, toxicity, pharmacology, and graph neural networks, instead of treating all keywords equally.
+      - The goal is to get a slightly better sense of “how biomedical” a paper is, not just whether it contains a single keyword, so I can quickly reuse this on other arXiv abstracts and get a fast relevance check.
+3. Observations:
+     - The pipeline worked on the new page without needing any structural changes, which shows it’s reusable across similar arXiv abstracts.
+     - The only change I made was updating the input URL.
+     - The bio_tox_relevance_score seemed to pick up the biomedical relevance pretty well for this paper, which makes sense given the topic.
 
 **Dataset Source**
-1. TODO
+1. Molecular Contrastive Learning of Representations via Graph Neural Networks
+   https://arxiv.org/abs/2102.10056
+   Domain: Biomedical AI (drug discovery & toxicity prediction)
 
 
 ## Example Artifact (Output)
